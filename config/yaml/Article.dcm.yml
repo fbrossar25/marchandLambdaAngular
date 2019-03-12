@@ -1,0 +1,40 @@
+Article:
+    type: entity
+    table: ARTICLE
+    uniqueConstraints:
+        NOM:
+            columns:
+                - NOM
+    id:
+        idArticle:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            column: ID_ARTICLE
+            generator:
+                strategy: IDENTITY
+    fields:
+        nom:
+            type: string
+            nullable: false
+            length: 255
+            options:
+                fixed: false
+            column: NOM
+        prix:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            column: PRIX
+        description:
+            type: string
+            nullable: false
+            length: 1024
+            options:
+                fixed: false
+                default: !!binary UGFzIGRlIGRlc2NyaXB0aW9uIGTpZmluaWU=
+            column: DESCRIPTION
+    lifecycleCallbacks: {  }

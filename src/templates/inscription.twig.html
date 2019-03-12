@@ -1,0 +1,43 @@
+{% extends 'app.twig.html' %}
+{% block head %}
+<link rel="stylesheet" type="text/css" href="src/assets/css/inscription.css" />
+{% endblock %}
+{% block body %}
+<h1>{{title}}</h1>
+<form id="formulaire-inscription" action="/inscription-validation" method="post" onsubmit="return validerInscription(event);">
+    <fieldset>
+        <legend>Identité</legend>
+        <label>Nom :</label><input id="nom" type="text" name="nom" required/><br>
+        <label>Prenom :</label><input id="prenom" type="text" name="prenom" required/>
+    </fieldset>
+    <fieldset>
+        <legend>Adresse</legend>
+        <label>Libellé voie :</label><input id="voie" type="text" name="voie" required/><br>
+        <label>Numéro voie :</label><input id="numero" type="text" name="numero" required/><br>
+        <label>Code postale :</label><input id="cp" type="text" name="cp" required/><br>
+        <label>Commune :</label><input id="commune" type="text" name="commune" required/>
+    </fieldset>
+    <fieldset>
+        <legend>Contact</legend>
+        <label>Téléphone :</label><input id="telephone" type="text" name="telephone" /><br>
+        <label>Email :</label><input id="email" type="email" name="email" required/>
+    </fieldset>
+    <fieldset>
+        <legend>Authentification</legend>
+        <label>Mot de passe :</label><input id="pass" type="password" name="pass" required/><br>
+        <label>Confirmation du mot de passe :</label><input id="confirm" type="password" name="confirm" required/>
+    </fieldset>
+    <input type="submit" value="Valider" id="btn-valider"/>
+</form>
+{% if erreurs %}
+<div id="erreurs" class="hidden erreurs">
+    <h1>Erreurs : </h1>
+    <ul id="liste-erreurs">
+        {% for erreur in erreurs %}
+        <li>{{erreur}}</li>
+        {% endfor %}
+    </ul>
+</div>
+<script src="src/assets/js/inscription.js"></script>
+{% endif %}
+{% endblock %}

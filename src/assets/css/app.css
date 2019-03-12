@@ -1,0 +1,11 @@
+main>h1 {
+    font-weight: bold;
+}
+
+.hidden {
+    display: none;
+}
+
+.erreurs{
+    background-color: rgba(255, 0, 0, 0.5);
+}
