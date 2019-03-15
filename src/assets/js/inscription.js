@@ -2,37 +2,34 @@ $('#error').hide();
 
 $.validator.messages.required = 'Ce champ est requis';
 $.validator.messages.email = 'Ce champ doit être une adresse email valide';
-
-function invalidHandler(event, validator){
-    if(validator.numberOfInvalids()){
-        $('#error').show();
-    }else{
-        $('#error').hide();
-    }
-}
+$.validator.messages.minlength = 'Au moins 6 caractères requis';
 
 $('#subscriptionForm').validate({
     rules:{
         email: {
             required: true,
             email: true,
-            remote: "email-disponible"
+            remote: 'email-disponible'
         },
-        // firstName: "required",
-        // lastName: "required",
-        // password: "required",
-        // confirm: "required",
-        // city: "required",
-        // postalCode: "required",
-        // street: "required",
-        // streetNo: "required"
+        confirm:{
+            equalTo: '#password'
+        }
     },
     messages:{
         email:{
-            remote: "Un compte utilise déjà cet adresse email"
+            remote: 'Un compte utilise déjà cet adresse email'
+        },
+        confirm:{
+            equalTo: 'Les mots de passes de correspondent pas'
         }
     },
-    invalidHandler: invalidHandler,
+    invalidHandler: (event, validator) => {
+        if(validator.numberOfInvalids()){
+            $('#error').show();
+        }else{
+            $('#error').hide();
+        }
+    },
     errorClass: 'is-invalid',
     validClass: 'is-valid'
 });

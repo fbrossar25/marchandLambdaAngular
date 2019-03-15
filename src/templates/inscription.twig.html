@@ -4,36 +4,36 @@
 {% endblock %}
 {% block main %}
 <div class="container">
-    <form id="subscriptionForm" class="form-horizontal" role="form">
+    <form id="subscriptionForm" class="form-horizontal" role="form" action="/inscription-validation" method="post">
         <h2>Inscription</h2>
         <div class="form-group">
             <label for="firstName" class="col-md-6 control-label">Prénom*</label>
             <div class="col-sm-12">
-                <input type="text" id="firstName" name="firstName" placeholder="Prénom" class="form-control" autofocus>
+                <input type="text" id="firstName" name="firstName" placeholder="Prénom" class="form-control" required autofocus>
             </div>
         </div>
         <div class="form-group">
             <label for="lastName" class="col-md-6 control-label">Nom*</label>
             <div class="col-sm-12">
-                <input type="text" id="lastName" name="lastName" placeholder="Nom" class="form-control" autofocus>
+                <input type="text" id="lastName" name="lastName" placeholder="Nom" class="form-control" required autofocus>
             </div>
         </div>
         <div class="form-group">
             <label for="email" class="col-md-6 control-label">Email*</label>
             <div class="col-sm-12">
-                <input type="email" id="email" name="email" placeholder="Email" class="form-control">
+                <input type="email" id="email" name="email" placeholder="Email" class="form-control" required>
             </div>
         </div>
         <div class="form-group">
             <label for="password" class="col-md-6 control-label">Mot de passe*</label>
             <div class="col-sm-12">
-                <input type="password" id="password" name="password" placeholder="Mot de passe" class="form-control">
+                <input type="password" id="password" name="password" placeholder="Mot de passe" class="form-control" required minlength="6">
             </div>
         </div>
         <div class="form-group">
             <label for="confirm" class="col-md-6 control-label">Confimer le mot de passe*</label>
             <div class="col-sm-12">
-                <input type="password" id="confirm" name="confirm" placeholder="Confimer le mot de passe" class="form-control">
+                <input type="password" id="confirm" name="confirm" placeholder="Confimer le mot de passe" class="form-control" required>
             </div>
         </div>
         <div class="form-group">
@@ -45,25 +45,25 @@
         <div class="form-group">
             <label for="city" class="col-md-6 control-label">Commune*</label>
             <div class="col-sm-12">
-                <input type="text" id="city" name="city" placeholder="Commune" class="form-control">
+                <input type="text" id="city" name="city" placeholder="Commune" class="form-control" required>
             </div>
         </div>
         <div class="form-group">
             <label for="postalCode" class="col-md-6 control-label">Code postal*</label>
             <div class="col-sm-12">
-                <input type="text" id="postalCode" name="postalCode" placeholder="Code postal" class="form-control">
+                <input type="text" id="postalCode" name="postalCode" placeholder="Code postal" class="form-control" required>
             </div>
         </div>
         <div class="form-group">
             <label for="street" class="col-md-6 control-label">Libellé de voie*</label>
             <div class="col-sm-12">
-                <input type="text" id="street" name="street" placeholder="Libellé de voie" class="form-control">
+                <input type="text" id="street" name="street" placeholder="Libellé de voie" class="form-control" required>
             </div>
         </div>
         <div class="form-group">
             <label for="streetNo" class="col-md-6 control-label">Numéro de voie*</label>
             <div class="col-sm-12">
-                <input type="text" id="streetNo" name="streetNo" placeholder="Numéro de voie" class="form-control">
+                <input type="text" id="streetNo" name="streetNo" placeholder="Numéro de voie" class="form-control" required>
             </div>
         </div>
         <div class="form-group">
