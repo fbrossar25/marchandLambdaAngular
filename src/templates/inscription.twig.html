@@ -2,32 +2,83 @@
 {% block head %}
 <link rel="stylesheet" type="text/css" href="src/assets/css/inscription.css" />
 {% endblock %}
-{% block body %}
-<h1>Formulaire d'inscription</h1>
-<form id="formulaire-inscription" action="/inscription-validation" method="post" onsubmit="return validerInscription(event);">
-    <fieldset>
-        <legend>Identité</legend>
-        <label for="nom">Nom :</label><input id="nom" type="text" name="nom" required/><br>
-        <label for="prenom">Prenom :</label><input id="prenom" type="text" name="prenom" required/>
-    </fieldset>
-    <fieldset>
-        <legend>Adresse</legend>
-        <label for="voie">Libellé voie :</label><input id="voie" type="text" name="voie" required/><br>
-        <label for="numero">Numéro voie :</label><input id="numero" type="text" name="numero" required/><br>
-        <label for="cp">Code postale :</label><input id="cp" type="text" name="cp" required/><br>
-        <label for="commune">Commune :</label><input id="commune" type="text" name="commune" required/>
-    </fieldset>
-    <fieldset>
-        <legend>Contact</legend>
-        <label for="telephone">Téléphone :</label><input id="telephone" type="text" name="telephone" /><br>
-        <label for="email">Email :</label><input id="email" type="email" name="email" required/>
-    </fieldset>
-    <fieldset>
-        <legend>Authentification</legend>
-        <label for="pass">Mot de passe :</label><input id="pass" type="password" name="pass" required/><br>
-        <label for="confirm">Confirmation du mot de passe :</label><input id="confirm" type="password" name="confirm" required/>
-    </fieldset>
-    <input type="submit" value="Valider" id="btn-valider"/>
-</form>
+{% block main %}
+<div class="container">
+    <form id="subscriptionForm" class="form-horizontal" role="form">
+        <h2>Inscription</h2>
+        <div class="form-group">
+            <label for="firstName" class="col-md-6 control-label">Prénom*</label>
+            <div class="col-sm-12">
+                <input type="text" id="firstName" name="firstName" placeholder="Prénom" class="form-control" autofocus>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="lastName" class="col-md-6 control-label">Nom*</label>
+            <div class="col-sm-12">
+                <input type="text" id="lastName" name="lastName" placeholder="Nom" class="form-control" autofocus>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="email" class="col-md-6 control-label">Email*</label>
+            <div class="col-sm-12">
+                <input type="email" id="email" name="email" placeholder="Email" class="form-control">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="password" class="col-md-6 control-label">Mot de passe*</label>
+            <div class="col-sm-12">
+                <input type="password" id="password" name="password" placeholder="Mot de passe" class="form-control">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="confirm" class="col-md-6 control-label">Confimer le mot de passe*</label>
+            <div class="col-sm-12">
+                <input type="password" id="confirm" name="confirm" placeholder="Confimer le mot de passe" class="form-control">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="phoneNumber" class="col-md-6 control-label">Numéro de téléphone</label>
+            <div class="col-sm-12">
+                <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="Numéro de téléphone" class="form-control">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="city" class="col-md-6 control-label">Commune*</label>
+            <div class="col-sm-12">
+                <input type="text" id="city" name="city" placeholder="Commune" class="form-control">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="postalCode" class="col-md-6 control-label">Code postal*</label>
+            <div class="col-sm-12">
+                <input type="text" id="postalCode" name="postalCode" placeholder="Code postal" class="form-control">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="street" class="col-md-6 control-label">Libellé de voie*</label>
+            <div class="col-sm-12">
+                <input type="text" id="street" name="street" placeholder="Libellé de voie" class="form-control">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="streetNo" class="col-md-6 control-label">Numéro de voie*</label>
+            <div class="col-sm-12">
+                <input type="text" id="streetNo" name="streetNo" placeholder="Numéro de voie" class="form-control">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-12 col-sm-offset-3">
+                <span class="help-block">*Champs requis</span>
+            </div>
+        </div>
+        <div id="error" class="form-group alert alert-danger">
+            <div class="col-sm-12 col-sm-offset-3">
+                Au moins un champs requis requiert votre attention
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">S'inscrire</button>
+    </form>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
 <script src="src/assets/js/inscription.js"></script>
 {% endblock %}
