@@ -5,7 +5,7 @@ $.validator.messages.required = 'Ce champ est requis';
 $('#subscriptionForm').validate({
     rules:{
         name:{
-            remote: 'article-disponible'
+            remote: '/article-disponible'
         }
     },
     messages:{

@@ -6,7 +6,7 @@
         { "name": "fbrossar25", "email": "florian.brossard@etu.unistra.fr" }
     ],
     "require": {
-        "twig/twig": "~1.0",
+        "twig/twig": "~2.0",
         "slim/slim": "^3.0",
         "doctrine/orm": "2.*",
         "symfony/yaml": "4.2.*",

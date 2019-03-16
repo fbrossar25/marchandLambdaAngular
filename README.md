@@ -3,10 +3,10 @@
 ## TODO
 
 - Accueil:
-    - [ ] plusieurs articles (5)
+    - [x] plusieurs articles (6)
     - [x] /accueil
     - [ ] Redirection vers /catalogue/0
-    - [ ] Redirection vers /article/{id}
+    - [x] Redirection vers /article/{id}
 - Catalogue
     - [ ] Liste des article
     - [ ] Nom, prix
@@ -22,9 +22,13 @@
     - [x] Création client
     - [x] Gestion d'erreur à l'inscription
 - Compte Client
+    - [x] Connexion compte
     - [ ] Édition info client
 - Aministration
-    - [ ] CRUD Article
+    - [x] Connexion compte admin
+    - [x] Ajout article
+    - [ ] Suppression article
+    - [ ] Suppression compte client
 
 ## BONUS
 - Panier
@@ -37,7 +41,7 @@
  - Démarrer mysql : `mysql-ctl start`
  - Mise à jour des dépendances : `composer update`
  - Nettoyer cache Doctrine : `./doctrine orm:clear-cache:metadata`
- - Mettre à jour Entity depuis la base : `./doctrine orm:convert-mapping --namespace="" --force --from-database yml ./config/yaml`
+ - Mettre à jour mapping depuis la base : `./doctrine orm:convert-mapping --namespace="" --force --from-database yml ./config/yaml`
  - Mettre à jour base depuis Entity : `./doctrine orm:schema-tool:update --force`
  - Valider schema : `./doctrine orm:validate-schema`
  - Générer Entity depuis la base : `./doctrine orm:generate-entities --no-backup --generate-annotations=false --update-entities=true --generate-methods=false ./src/model`

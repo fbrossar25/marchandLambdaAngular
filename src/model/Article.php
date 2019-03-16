@@ -7,13 +7,13 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Article
  *
- * @ORM\Table(name="ARTICLE", uniqueConstraints={@ORM\UniqueConstraint(name="NOM", columns={"NOM"})})
+ * @ORM\Table(name="article", uniqueConstraints={@ORM\UniqueConstraint(name="NOM", columns={"NOM"})})
  * @ORM\Entity
  */
 class Article
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="ID_ARTICLE", type="integer")
      * @ORM\Id
@@ -29,24 +29,24 @@ class Article
     private $nom;
 
     /**
-     * @var integer
+     * @var string
      *
-     * @ORM\Column(name="PRIX", type="integer", nullable=false)
+     * @ORM\Column(name="PRIX", type="decimal", precision=17, scale=2, nullable=false)
      */
     private $prix;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="DESCRIPTION", type="string", length=1024, nullable=false)
+     * @ORM\Column(name="DESCRIPTION", type="string", length=1024, nullable=false, options={"default"="Pas de description définie"})
      */
-    private $description = 'Pas de description d�finie';
+    private $description = 'Pas de description définie';
 
 
     /**
-     * Get idArticle
+     * Get idArticle.
      *
-     * @return integer
+     * @return int
      */
     public function getIdArticle()
     {
@@ -54,7 +54,7 @@ class Article
     }
 
     /**
-     * Set nom
+     * Set nom.
      *
      * @param string $nom
      *
@@ -68,7 +68,7 @@ class Article
     }
 
     /**
-     * Get nom
+     * Get nom.
      *
      * @return string
      */
@@ -78,9 +78,9 @@ class Article
     }
 
     /**
-     * Set prix
+     * Set prix.
      *
-     * @param integer $prix
+     * @param string $prix
      *
      * @return Article
      */
@@ -92,9 +92,9 @@ class Article
     }
 
     /**
-     * Get prix
+     * Get prix.
      *
-     * @return integer
+     * @return string
      */
     public function getPrix()
     {
@@ -102,7 +102,7 @@ class Article
     }
 
     /**
-     * Set description
+     * Set description.
      *
      * @param string $description
      *
@@ -116,7 +116,7 @@ class Article
     }
 
     /**
-     * Get description
+     * Get description.
      *
      * @return string
      */

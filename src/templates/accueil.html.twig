@@ -1,0 +1,36 @@
+{% extends 'app.html.twig' %}
+{% block main %}
+    <div class="container">
+        <div class="card-deck">
+        {% set count = 0 %}
+        {% for article in articles %}
+            {% if count is same as(0) %}
+                <div class="row mb-4">
+            {% endif %}
+                <div class="card">
+                    <a href="/article/{{ article.idArticle }}">
+                        <img class="card-img-top" src="http://placehold.it/700x400" alt="{{ article.nom }}">
+                    </a>
+                    <div class="card-body">
+                        <h4 class="card-title">
+                            <a href="/article/{{ article.idArticle }}">{{ article.nom }}</a>
+                        </h4>
+                        <h5>{{ article.prix }}€</h5>
+                        <p class="card-text">{{ article.description }}</p>
+                    </div>
+                    <div class="card-footer">
+                        <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
+                    </div>
+                </div>
+            {% set count = count + 1 %}
+            {% if count is same as(3) %}
+                </div>
+                {% set count = 0 %}
+            {% endif %}
+        {% endfor %}
+        {% if count is not same as(0) %}
+            </div>
+        {% endif %}
+        </div>
+    </div>
+{% endblock %}

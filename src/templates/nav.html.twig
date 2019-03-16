@@ -11,8 +11,12 @@
                 <a class="nav-link" href="/compte">Mon compte</a>
             </li>
             {% if session.admin %}
-            <li class="nav-item">
-                <a class="nav-link" href="/administration">Administration</a>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" href="#">Administration</a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="/administration/article">Ajouter un article</a>
+                    <a class="dropdown-item" href="/administration/utilisateurs">Gestion des utilisateurs</a>
+                </div>
             </li>
             {% endif %}
             <li class="nav-item">

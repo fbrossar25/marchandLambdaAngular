@@ -18,7 +18,16 @@ $TWIG->addGlobal('session',$_SESSION);
 
 function loadTemplate($template){
     global $TWIG;
-    return $TWIG->loadTemplate("$template.twig.html");
+    return $TWIG->loadTemplate("$template.html.twig");
+}
+
+function estSessionAdmin(){
+    global $clientRepository;
+    if(isset($_SESSION['email'])){
+        $client = $clientRepository->findOneBy(['email' => $_SESSION['email']]);
+        return $client !== null && $client->getAdmin();
+    }
+    return false;
 }
 
 function emailDisponible($email){
@@ -31,7 +40,7 @@ function articleDisponible($article){
     return $articleRepository->count(['nom' => $article]) === 0;
 }
 
-function connect($email, $pass){
+function connecter($email, $pass){
     global $clientRepository;
     $client = $clientRepository->findOneBy(['email' => $email]);
     if($client !== null && password_verify($pass, $client->getPass())){
@@ -85,6 +94,15 @@ function ajouterArticle(array $data){
     }
 }
 
+function produitsAccueil(){
+    global $entityManager;
+    $qb = $entityManager->createQueryBuilder();
+    $qb->select('a')
+        ->from('Article', 'a')
+        ->setMaxResults(6);
+    return $qb->getQuery()->getArrayResult();
+}
+
 $app = new \Slim\App([
     'settings'=> [
         'displayErrorDetails' => true,
@@ -100,7 +118,9 @@ $app = new \Slim\App([
 $app->redirect('/', '/accueil', 303);
 
 $app->get('/accueil', function(Request $req, Response $resp, array $args){
-    return $resp->write(loadTemplate('accueil')->render([]));
+    return $resp->write(loadTemplate('accueil')->render([
+        'articles' => produitsAccueil()
+    ]));
 });
 
 $app->get('/connexion', function(Request $req, Response $resp, array $args){
@@ -109,7 +129,7 @@ $app->get('/connexion', function(Request $req, Response $resp, array $args){
 
 $app->post('/connexion', function(Request $req, Response $resp, array $args){
     $data = $req->getParsedBody();
-    $client = connect($data['email'], $data['password']);
+    $client = connecter($data['email'], $data['password']);
     if($client !== null && $client !== false){
         $_SESSION['email'] = $client->getEmail();
         $_SESSION['admin'] = $client->getAdmin();
@@ -144,23 +164,20 @@ $app->post('/inscription', function(Request $req, Response $resp, array $args){
     }
 });
 
-$app->get('/administration', function(Request $req, Response $resp, array $args){
-    if(isset($_SESSION['admin']) && $_SESSION['admin']){
-        error_log(''.implode($args).' -- '.implode($req->getParsedBody() === null ? [] : $req->getParsedBody() , ','));
-        return $resp->write(loadTemplate('administration')
+$app->get('/administration/article', function(Request $req, Response $resp, array $args){
+    if(estSessionAdmin()){
+        return $resp->write(loadTemplate('administration-article')
                     ->render($req->getParsedBody() === null ? [] : $req->getParsedBody()));
     }else{
         return $resp->write(loadTemplate('erreur')->render([
             'message' => "Vous n'avez pas l'autorisation d'accéder à cette page"
         ]));
     }
-})->setName('administration');
+});
 
-$app->post('/ajouter-article', function(Request $req, Response $resp, array $args){
-    if($_SESSION['admin']){
-        $added = ajouterArticle($req->getParsedBody());
-        return $resp->withRedirect($this->router->pathFor('administration',
-            ['added' => $added], ['added' => $added]));
+$app->post('/administration/article', function(Request $req, Response $resp, array $args){
+    if(estSessionAdmin()){
+        return $resp->write(loadTemplate('administration-article')->render(['added' => ajouterArticle($req->getParsedBody())]));
     }else{
         return $resp->write(loadTemplate('erreur')->render([
             'message' => "Vous n'avez pas l'autorisation d'accéder à cette page"

@@ -24,10 +24,10 @@ Article:
                 fixed: false
             column: NOM
         prix:
-            type: integer
+            type: decimal
             nullable: false
-            options:
-                unsigned: false
+            precision: 17
+            scale: 2
             column: PRIX
         description:
             type: string

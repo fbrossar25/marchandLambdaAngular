@@ -83,6 +83,6 @@ Client:
             type: boolean
             nullable: false
             options:
-                default: '1'
+                default: '0'
             column: ADMIN
     lifecycleCallbacks: {  }
