@@ -310,4 +310,35 @@ class Client
     {
         return $this->telephone;
     }
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="ADMIN", type="boolean", nullable=false, options={"default"="1"})
+     */
+    private $admin = '1';
+
+
+    /**
+     * Set admin.
+     *
+     * @param bool $admin
+     *
+     * @return Client
+     */
+    public function setAdmin($admin)
+    {
+        $this->admin = $admin;
+
+        return $this;
+    }
+
+    /**
+     * Get admin.
+     *
+     * @return bool
+     */
+    public function getAdmin()
+    {
+        return $this->admin;
+    }
 }

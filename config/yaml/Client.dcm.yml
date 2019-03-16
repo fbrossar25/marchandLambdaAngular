@@ -1,6 +1,6 @@
 Client:
     type: entity
-    table: CLIENT
+    table: client
     uniqueConstraints:
         EMAIL:
             columns:
@@ -79,4 +79,10 @@ Client:
             options:
                 fixed: false
             column: TELEPHONE
+        admin:
+            type: boolean
+            nullable: false
+            options:
+                default: '1'
+            column: ADMIN
     lifecycleCallbacks: {  }

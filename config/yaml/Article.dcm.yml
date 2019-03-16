@@ -1,6 +1,6 @@
 Article:
     type: entity
-    table: ARTICLE
+    table: article
     uniqueConstraints:
         NOM:
             columns:

@@ -4,7 +4,7 @@
 
 - Accueil:
     - [ ] plusieurs articles (5)
-    - [ ] /accueil
+    - [x] /accueil
     - [ ] Redirection vers /catalogue/0
     - [ ] Redirection vers /article/{id}
 - Catalogue
@@ -19,15 +19,15 @@
 - Recherche
     - [ ] filtrage Nom, prix
 - Inscription
-    - [ ] Création client
-    - [ ] Gestion d'erreur à l'inscription
+    - [x] Création client
+    - [x] Gestion d'erreur à l'inscription
 - Compte Client
     - [ ] Édition info client
 - Aministration
     - [ ] CRUD Article
 
 ## BONUS
-- [ ] Panier
+- Panier
     - [ ] Ajout / Suppression / Consultation panier
     - [ ] Suppression d'un article -> suppression dans les paniers
 - Paypal
