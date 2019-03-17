@@ -1,23 +1,10 @@
 {% extends 'app.html.twig' %}
 {% block main %}
-    <div class="container col-8">
-        <div class="card-deck">
-            {% set count = 0 %}
+    <div class="container">
             {% for article in articles %}
-                {% if count is same as(0) %}
-                    <div class="row mb-4">
-                {% endif %}
                 {% include 'article-card.html.twig' with article %}
                 {% set count = count + 1 %}
-                {% if count is same as(3) %}
-                    </div>
-                    {% set count = 0 %}
-                {% endif %}
             {% endfor %}
-            {% if count is not same as(0) %}
-                </div>
-            {% endif %}
-        </div>
-        {% include 'pagination.html.twig' with pagination %}
     </div>
+    {% include 'pagination.html.twig' with pagination %}
 {% endblock %}

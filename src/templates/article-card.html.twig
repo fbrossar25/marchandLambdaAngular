@@ -1,15 +1,18 @@
-<div class="card">
-    <a href="/article/{{ article.idArticle }}">
-        <img class="card-img-top" src="http://placehold.it/700x400" alt="{{ article.nom }}">
-    </a>
-    <div class="card-body">
-        <h4 class="card-title">
-            <a href="/article/{{ article.idArticle }}">{{ article.nom }}</a>
-        </h4>
-        <h5>{{ article.prix }}€</h5>
-        <p class="card-text">{{ article.description }}</p>
-    </div>
-    <div class="card-footer">
-        <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
+<div class="card mb-4">
+    <div class="row no-gutters">
+        <div class="col-md-4">
+            <a href="/article/{{ article.idArticle }}">
+                <img class="card-img" src="http://placehold.it/700x400" alt="{{ article.nom }}">
+            </a>
+        </div>
+        <div class="col-md-8">
+            <div class="card-body">
+                <h4 class="card-title">
+                    <a href="/article/{{ article.idArticle }}">{{ article.nom }}</a>
+                </h4>
+                <h5>{{ article.prix }}€</h5>
+                <p class="card-text">{{ article.description }}</p>
+            </div>
+        </div>
     </div>
 </div>

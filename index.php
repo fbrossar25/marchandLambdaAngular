@@ -309,7 +309,7 @@ $app->get('/email-existe', function(Request $req, Response $resp, array $args){
 $app->redirect('/catalogue/0', '/catalogue/1', 301);
 
 $app->get('/catalogue/{page:[1-9][0-9]*}', function(Request $req, Response $resp, array $args){
-    $articlesParPages = 9;
+    $articlesParPages = 5;
     $nombrePages = nombrePage($articlesParPages);
     $page = intval($args['page']);
     //On affiche la dernière page si le nombre de page donné est plus grand que le nombre de pages
