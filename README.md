@@ -5,14 +5,14 @@
 - Accueil:
     - [x] plusieurs articles (6)
     - [x] /accueil
-    - [ ] Redirection vers /catalogue/0
+    - [x] Redirection vers /catalogue/1
     - [x] Redirection vers /article/{id}
 - Catalogue
-    - [ ] Liste des article
-    - [ ] Nom, prix
-    - [ ] 20 par pages
-    - [ ] /catalogue/{page}
-    - [ ] Redirection vers /article/{id}
+    - [x] Liste des article
+    - [x] Nom, prix
+    - [x] 9 par pages
+    - [x] /catalogue/{page}
+    - [x] Redirection vers /article/{id}
 - Article
     - [ ] Nom, descrption, prix
     - [ ] /article/{id}
@@ -29,7 +29,9 @@
     - [x] Ajout article
     - [ ] Suppression article
     - [ ] Suppression compte client
-
+- Sécurité
+    - [ ] Filtrage des entrées utilisateurs
+    
 ## BONUS
 - Panier
     - [ ] Ajout / Suppression / Consultation panier

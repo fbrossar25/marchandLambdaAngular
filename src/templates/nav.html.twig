@@ -1,38 +1,44 @@
 <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
     <a class="navbar-brand" href="/accueil">Accueil</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
+            aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="collapse navbar-collapse" id="navbarsExampleDefault">
         <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/catalogue/1">Catalogue</a>
+            </li>
             {% if session.email %}
-            <li class="nav-item">
-                <a class="nav-link" href="/compte">Mon compte</a>
-            </li>
-            {% if session.admin %}
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" href="#">Administration</a>
-                <div class="dropdown-menu">
-                    <a class="dropdown-item" href="/administration/article">Ajouter un article</a>
-                    <a class="dropdown-item" href="/administration/utilisateurs">Gestion des utilisateurs</a>
-                </div>
-            </li>
-            {% endif %}
-            <li class="nav-item">
-                <a class="nav-link" href="/deconnexion">Déconnexion</a>
-            </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/compte">Mon compte</a>
+                </li>
+                {% if session.admin %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false" href="#">Administration</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="/administration/article">Ajouter un article</a>
+                            <a class="dropdown-item" href="/administration/utilisateurs">Gestion des utilisateurs</a>
+                        </div>
+                    </li>
+                {% endif %}
+                <li class="nav-item">
+                    <a class="nav-link" href="/deconnexion">Déconnexion</a>
+                </li>
             {% else %}
-            <li class="nav-item">
-                <a class="nav-link" href="/inscription">Inscription</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/connexion">Connexion</a>
-            </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/inscription">Inscription</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/connexion">Connexion</a>
+                </li>
             {% endif %}
         </ul>
         <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" name="filtre" type="text" placeholder="Rechercher un produit" aria-label="Rechercher">
+            <input class="form-control mr-sm-2" name="filtre" type="text" placeholder="Rechercher un produit"
+                   aria-label="Rechercher">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Rechercher</button>
         </form>
     </div>

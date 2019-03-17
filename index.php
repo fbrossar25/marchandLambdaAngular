@@ -1,6 +1,7 @@
 <?php
 use Slim\Http\Request as Request;
 use Slim\Http\Response as Response;
+use Doctrine\ORM\Tools\Pagination\Paginator as Paginator;
 
 require_once 'vendor/autoload.php';
 require_once 'bootstrap-doctrine.php';
@@ -143,6 +144,32 @@ function produitsAccueil(){
     return $qb->getQuery()->getArrayResult();
 }
 
+function articlesPage($page, $articlesParPage){
+    global $entityManager;
+    $qb = $entityManager->createQueryBuilder();
+    //les pages sot indexées à partir de 1
+    $query = $qb->select('a')
+                ->from('Article', 'a')
+                ->setFirstResult(($page-1) * $articlesParPage)
+                ->setMaxResults($articlesParPage)
+                ->getQuery();
+    return $query->getArrayResult();
+}
+
+function nombrePage($articlesParPage){
+    global $entityManager;
+    $qb = $entityManager->createQueryBuilder();
+    $query = $qb->select('count(a)')
+        ->from('Article', 'a')
+        ->getQuery();
+    try {
+        $res = $query->getSingleScalarResult();
+        return ceil($res / $articlesParPage);
+    } catch (\Doctrine\ORM\NonUniqueResultException $e) {
+        return 0;
+    }
+}
+
 $app = new \Slim\App([
     'settings'=> [
         'displayErrorDetails' => true,
@@ -155,7 +182,7 @@ $app = new \Slim\App([
     }
 ]);
 
-$app->redirect('/', '/accueil', 303);
+$app->redirect('/', '/accueil', 301);
 
 $app->get('/accueil', function(Request $req, Response $resp, array $args){
     return $resp->write(loadTemplate('accueil')->render([
@@ -278,5 +305,26 @@ $app->get('/email-changement-disponible', function(Request $req, Response $resp,
 $app->get('/email-existe', function(Request $req, Response $resp, array $args){
     return $resp->withJson(!emailDisponible($req->getParam('email')));
 });
+
+$app->redirect('/catalogue/0', '/catalogue/1', 301);
+
+$app->get('/catalogue/{page:[1-9][0-9]*}', function(Request $req, Response $resp, array $args){
+    $articlesParPages = 9;
+    $nombrePages = nombrePage($articlesParPages);
+    $page = intval($args['page']);
+    //On affiche la dernière page si le nombre de page donné est plus grand que le nombre de pages
+    if($page > $nombrePages){
+        $page = $nombrePages;
+    }
+    return $resp->write(loadTemplate('catalogue')->render([
+        'articles' => articlesPage($page, $articlesParPages),
+        'pagination' => [
+            'currentPage' => $page,
+            'alwaysShowFirstAndLast' => true,
+            'lastPage' => $nombrePages
+        ]
+    ]));
+});
+
 
 $app->run();

@@ -1,0 +1,60 @@
+{#
+ Source: https://gist.github.com/SimonSimCity/4594748#gistcomment-807071
+ Code source d'origine par : SimonSimCity (https://github.com/SimonSimCity)
+ Modification partagé par : TiMiXx
+#}
+{#
+  Source: http://dev.dbl-a.com/symfony-2-0/symfony2-and-twig-pagination/
+  Updated by: Simon Schick <simonsimcity@gmail.com>
+  Parameters:
+    * currentFilters (array) : associative array that contains the current route-arguments
+    * currentPage (int) : the current page you are in
+    * paginationPath (string) : the route name to use for links
+    * alwaysShowFirstAndLast (bool) : Always show first and last link (just disabled)
+    * lastPage (int) : represents the total number of existing pages
+#}
+{% if lastPage > 1 %}
+    {% set extremePagesLimit = 3 %}
+    {% set nearbyPagesLimit = 2 %}
+    <ul class="pagination justify-content-center">
+        {% if currentPage > 1 %}
+            {% if alwaysShowFirstAndLast %}
+                <li class="page-item"><a class="page-link" href="{{ paginationPath }}1" aria-label="Première">&laquo;</a></li>
+            {% endif %}
+            <li class="page-item"><a class="page-link" href="{{ paginationPath }}{{ currentPage-1 }}" aria-label="Précédente">&lt;</a></li>
+
+            {% for i in range(1, extremePagesLimit) if ( i < currentPage - nearbyPagesLimit ) %}
+                <li class="page-item"><a class="page-link" href="{{ paginationPath }}{{ i }}">{{ i }}</a></li>
+            {% endfor %}
+
+            {% if extremePagesLimit + 1 < currentPage - nearbyPagesLimit %}
+                <li class="page-item disabled"><a class="page-link" href="#">...</a></li>
+            {% endif %}
+
+            {% for i in range(currentPage-nearbyPagesLimit, currentPage-1) if ( i > 0 ) %}
+                <li class="page-item"><a class="page-link" href="{{ paginationPath }}{{ i }}">{{ i }}</a></li>
+            {% endfor %}
+        {% endif %}
+
+        <li class="page-item active"><a class="page-link" href="#">{{ currentPage }}</a></li>
+
+        {% if currentPage < lastPage %}
+            {% for i in range(currentPage+1, currentPage + nearbyPagesLimit) if ( i <= lastPage ) %}
+                <li class="page-item"><a class="page-link" href="{{ paginationPath }}{{ i }}">{{ i }}</a></li>
+            {% endfor %}
+
+            {% if  (lastPage - extremePagesLimit) > (currentPage + nearbyPagesLimit) %}
+                <li class="page-item disabled"><a class="page-link" href="#">...</a></li>
+            {% endif %}
+
+            {% for i in range(lastPage - extremePagesLimit+1, lastPage) if ( i > currentPage + nearbyPagesLimit ) %}
+                <li class="page-item"><a class="page-link" href="{{ paginationPath }}{{ i }}">{{ i }}</a></li>
+            {% endfor %}
+
+            <li class="page-item"><a class="page-link" href="{{ paginationPath }}{{ currentPage+1 }}" aria-label="Suivante">&gt;</a></li>
+            {% if alwaysShowFirstAndLast %}
+                <li class="page-item"><a class="page-link" href="{{ paginationPath }}{{ lastPage }}" aria-label="Dernière">&raquo;</a></li>
+            {% endif %}
+        {% endif %}
+    </ul>
+{% endif %}
