@@ -191,7 +191,9 @@ $app->get('/accueil', function(Request $req, Response $resp, array $args){
 });
 
 $app->get('/connexion', function(Request $req, Response $resp, array $args){
-    return $resp->write(loadTemplate('connexion')->render([]));
+    return $resp->write(loadTemplate('connexion')->render([
+        'activePage' => 'connexion'
+    ]));
 });
 
 $app->post('/connexion', function(Request $req, Response $resp, array $args){
@@ -204,7 +206,8 @@ $app->post('/connexion', function(Request $req, Response $resp, array $args){
     }else{
         return $resp->write(loadTemplate('connexion')->render([
             'erreur' => true,
-            'email' => $data['email']
+            'email' => $data['email'],
+            'activePage' => 'connexion'
         ]));
     }
 });
@@ -216,7 +219,9 @@ $app->get('/deconnexion', function(Request $req, Response $resp, array $args){
 });
 
 $app->get('/inscription', function(Request $req, Response $resp, array $args){
-    return $resp->write(loadTemplate('inscription')->render([]));
+    return $resp->write(loadTemplate('inscription')->render([
+        'activePage' => 'inscription'
+    ]));
 });
 
 $app->post('/inscription', function(Request $req, Response $resp, array $args){
@@ -233,8 +238,10 @@ $app->post('/inscription', function(Request $req, Response $resp, array $args){
 
 $app->get('/administration/article', function(Request $req, Response $resp, array $args){
     if(estSessionAdmin()){
+        $data = $req->getParsedBody() === null ? [] : $req->getParsedBody();
+        $data = array_merge($data, ['activePage' => 'admin-article']);
         return $resp->write(loadTemplate('administration-article')
-                    ->render($req->getParsedBody() === null ? [] : $req->getParsedBody()));
+                    ->render($data));
     }else{
         return $resp->write(loadTemplate('erreur')->render([
             'message' => "Vous n'avez pas l'autorisation d'accéder à cette page"
@@ -244,7 +251,10 @@ $app->get('/administration/article', function(Request $req, Response $resp, arra
 
 $app->post('/administration/article', function(Request $req, Response $resp, array $args){
     if(estSessionAdmin()){
-        return $resp->write(loadTemplate('administration-article')->render(['added' => ajouterArticle($req->getParsedBody())]));
+        return $resp->write(loadTemplate('administration-article')->render([
+            'added' => ajouterArticle($req->getParsedBody()),
+            'activePage' => 'admin-article'
+        ]));
     }else{
         return $resp->write(loadTemplate('erreur')->render([
             'message' => "Vous n'avez pas l'autorisation d'accéder à cette page"
@@ -254,7 +264,10 @@ $app->post('/administration/article', function(Request $req, Response $resp, arr
 
 $app->get('/compte', function(Request $req, Response $resp, array $args){
     if(isset($_SESSION['email'])){
-        $data = array_merge(['compte' => utilisateurActuel()],$req->getParsedBody() === null ? [] : $req->getParsedBody());
+        $data = array_merge([
+            'compte' => utilisateurActuel(),
+            'activePage' => 'compte',
+        ],$req->getParsedBody() === null ? [] : $req->getParsedBody());
         return $resp->write(loadTemplate('compte')
             ->render($data));
     }else{
@@ -269,7 +282,8 @@ $app->post('/compte', function(Request $req, Response $resp, array $args){
         return $resp->write(loadTemplate('compte')
             ->render([
                 'erreur' => !mettreAJourCompte($req->getParsedBody()),
-                'compte' => utilisateurActuel()
+                'compte' => utilisateurActuel(),
+                'activePage' => 'compte'
             ]));
     }else{
         return $resp->write(loadTemplate('erreur')->render([
@@ -317,6 +331,7 @@ $app->get('/catalogue/{page:[1-9][0-9]*}', function(Request $req, Response $resp
         $page = $nombrePages;
     }
     return $resp->write(loadTemplate('catalogue')->render([
+        'activePage' => 'catalogue',
         'articles' => articlesPage($page, $articlesParPages),
         'pagination' => [
             'currentPage' => $page,

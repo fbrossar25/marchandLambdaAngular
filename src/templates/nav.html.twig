@@ -8,19 +8,19 @@
     <div class="collapse navbar-collapse" id="navbarsExampleDefault">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a class="nav-link" href="/catalogue/1">Catalogue</a>
+                <a class="nav-link {% if activePage is same as('catalogue') %}active{% endif %}" href="{% if activePage is same as('catalogue') %}#{% else %}/catalogue/1{% endif %}">Catalogue</a>
             </li>
             {% if session.email %}
                 <li class="nav-item">
-                    <a class="nav-link" href="/compte">Mon compte</a>
+                    <a class="nav-link {% if activePage is same as('compte') %}active{% endif %}" href="{% if activePage is same as('compte') %}#{% else %}/compte{% endif %}">Mon compte</a>
                 </li>
                 {% if session.admin %}
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                        <a class="nav-link dropdown-toggle {% if activePage starts with 'admin' %}active{% endif %}" data-toggle="dropdown" role="button" aria-haspopup="true"
                            aria-expanded="false" href="#">Administration</a>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href="/administration/article">Ajouter un article</a>
-                            <a class="dropdown-item" href="/administration/utilisateurs">Gestion des utilisateurs</a>
+                            <a class="dropdown-item" href="{% if activePage is same as('admin-article') %}#{% else %}/administration/article{% endif %}">Ajouter un article</a>
+                            <a class="dropdown-item" href="{% if activePage is same as('admin-utilisateur') %}#{% else %}/administration/utilisateurs{% endif %}">Gestion des utilisateurs</a>
                         </div>
                     </li>
                 {% endif %}
@@ -29,10 +29,10 @@
                 </li>
             {% else %}
                 <li class="nav-item">
-                    <a class="nav-link" href="/inscription">Inscription</a>
+                    <a class="nav-link {% if activePage is same as('inscription') %}active{% endif %}" href="{% if activePage is same as('inscription') %}#{% else %}/inscription{% endif %}">Inscription</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/connexion">Connexion</a>
+                    <a class="nav-link {% if activePage is same as('connexion') %}active{% endif %}" href="{% if activePage is same as('connexion') %}#{% else %}/connexion{% endif %}">Connexion</a>
                 </li>
             {% endif %}
         </ul>
