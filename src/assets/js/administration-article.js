@@ -2,7 +2,7 @@ $('#error').hide();
 
 $.validator.messages.required = 'Ce champ est requis';
 
-$('#subscriptionForm').validate({
+$('#addArticleForm').validate({
     rules:{
         name:{
             remote: '/article-disponible'

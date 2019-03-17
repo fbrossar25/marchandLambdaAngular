@@ -23,7 +23,7 @@
     - [x] Gestion d'erreur à l'inscription
 - Compte Client
     - [x] Connexion compte
-    - [ ] Édition info client
+    - [x] Édition info client
 - Aministration
     - [x] Connexion compte admin
     - [x] Ajout article

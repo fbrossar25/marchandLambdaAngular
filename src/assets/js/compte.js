@@ -4,23 +4,26 @@ $.validator.messages.required = 'Ce champ est requis';
 $.validator.messages.email = 'Ce champ doit être une adresse email valide';
 $.validator.messages.minlength = 'Au moins 6 caractères requis';
 
-$('#connectionForm').validate({
+$('#editAccount').validate({
     rules:{
         email: {
             required: true,
             email: true,
-            remote: 'email-existe'
+            remote: 'email-changement-disponible'
         },
         confirm:{
-            equalTo: '#password'
+            equalTo: '#newPassword'
+        },
+        newPassword:{
+            equalTo: '#newPassword'
         }
     },
     messages:{
         email:{
-            remote: "Ce compte n'existe pas"
+            remote: 'Un compte utilise déjà cet adresse email'
         },
         confirm:{
-            equalTo: 'Les mots de passes de correspondent pas'
+            equalTo: 'Les nouveaux mots de passes de correspondent pas'
         }
     },
     invalidHandler: (event, validator) => {

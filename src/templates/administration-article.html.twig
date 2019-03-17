@@ -4,7 +4,7 @@
 {% endblock %}
 {% block main %}
 <div class="container">
-    <form id="subscriptionForm" class="form-horizontal" role="form" action="/administration/article" method="post">
+    <form id="addArticleForm" class="form-horizontal" role="form" action="/administration/article" method="post">
         <h2>Ajouter un produit</h2>
         <div class="form-group">
             <label for="name" class="col-md-6 control-label">Nom du produit*</label>
@@ -54,5 +54,5 @@
     </form>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
-<script src="/src/assets/js/administration.js"></script>
+<script src="/src/assets/js/administration-article.js"></script>
 {% endblock %}
