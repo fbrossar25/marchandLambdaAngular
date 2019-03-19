@@ -173,7 +173,6 @@ function articlesPage($page, $articlesParPage, $filtre='', $prixMin=-1, $prixMax
     $qb->setFirstResult(($page - 1) * $articlesParPage);
     $qb->setMaxResults($articlesParPage);
     $query = $qb->getQuery();
-    error_log("articlesPage : ".$query->getDQL());
     return $query->getArrayResult();
 }
 
@@ -204,7 +203,6 @@ function nombrePage($articlesParPage, $filtre='', $prixMin=-1, $prixMax=-1){
     $query = $qb->getQuery();
     try {
         $res = intval($query->getSingleScalarResult());
-        error_log("nombrePage : ".$query->getDQL()." ==> ".$res." / ".$articlesParPage);
         return ceil($res / $articlesParPage);
     } catch (\Doctrine\ORM\NonUniqueResultException $e) {
         return 0;
