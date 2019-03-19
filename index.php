@@ -1,7 +1,8 @@
 <?php
 use Slim\Http\Request as Request;
 use Slim\Http\Response as Response;
-use Doctrine\ORM\Tools\Pagination\Paginator as Paginator;
+use Twig\Environment;
+use Twig\Loader\FilesystemLoader;
 
 require_once 'vendor/autoload.php';
 require_once 'bootstrap-doctrine.php';
@@ -11,8 +12,8 @@ session_start();
 $clientRepository = $entityManager->getRepository('Client');
 $articleRepository = $entityManager->getRepository('Article');
 
-$LOADER = new Twig_Loader_Filesystem('src/templates/');
-$TWIG = new Twig_Environment($LOADER, array(
+$LOADER = new FilesystemLoader('src/templates/');
+$TWIG = new Environment($LOADER, array(
     'cache' => false
 ));
 $TWIG->addGlobal('session',$_SESSION);
@@ -167,8 +168,10 @@ function articlesPage($page, $articlesParPage, $filtre='', $prixMin=0, $prixMax=
         $qb->andWhere('a.prix <= :max');
         $params['max'] = $prixMax;
     }
-    $qb->setParameters($params);
     $qb->orderBy('a.nom', $orderDesc === true ? 'DESC' : 'ASC');
+    $qb->setParameters($params);
+    $qb->setFirstResult(($page - 1) * $articlesParPage);
+    $qb->setMaxResults($articlesParPage);
     $query = $qb->getQuery();
     return $query->getArrayResult();
 }
