@@ -145,7 +145,7 @@ function produitsAccueil(){
     return $qb->getQuery()->getArrayResult();
 }
 
-function articlesPage($page, $articlesParPage, $filtre='', $prixMin=0, $prixMax=-1, $orderDesc=false){
+function articlesPage($page, $articlesParPage, $filtre='', $prixMin=-1, $prixMax=-1, $ordreColonne='nom', $ordre='ASC'){
     global $entityManager;
     $qb = $entityManager->createQueryBuilder();
     $params = [];
@@ -160,7 +160,7 @@ function articlesPage($page, $articlesParPage, $filtre='', $prixMin=0, $prixMax=
         $prixMax = $prixMin;
         $prixMin = $temp;
     }
-    if(is_numeric($prixMax) && $prixMin > 0){
+    if(is_numeric($prixMin) && $prixMin > 0){
         $qb->andWhere('a.prix >= :min');
         $params['min'] = $prixMin;
     }
@@ -168,15 +168,16 @@ function articlesPage($page, $articlesParPage, $filtre='', $prixMin=0, $prixMax=
         $qb->andWhere('a.prix <= :max');
         $params['max'] = $prixMax;
     }
-    $qb->orderBy('a.nom', $orderDesc === true ? 'DESC' : 'ASC');
+    $qb->orderBy($ordreColonne === 'prix' ? 'a.prix' : 'a.nom', $ordre === 'DESC' ? 'DESC' : 'ASC');
     $qb->setParameters($params);
     $qb->setFirstResult(($page - 1) * $articlesParPage);
     $qb->setMaxResults($articlesParPage);
     $query = $qb->getQuery();
+    error_log("articlesPage : ".$query->getDQL());
     return $query->getArrayResult();
 }
 
-function nombrePage($articlesParPage, $filtre='', $prixMin=0, $prixMax=-1){
+function nombrePage($articlesParPage, $filtre='', $prixMin=-1, $prixMax=-1){
     global $entityManager;
     $qb = $entityManager->createQueryBuilder();
     $params = [];
@@ -191,7 +192,7 @@ function nombrePage($articlesParPage, $filtre='', $prixMin=0, $prixMax=-1){
         $prixMax = $prixMin;
         $prixMin = $temp;
     }
-    if(is_numeric($prixMax) && $prixMin > 0){
+    if(is_numeric($prixMin) && $prixMin > 0){
         $qb->andWhere('a.prix >= :min');
         $params['min'] = $prixMin;
     }
@@ -203,6 +204,7 @@ function nombrePage($articlesParPage, $filtre='', $prixMin=0, $prixMax=-1){
     $query = $qb->getQuery();
     try {
         $res = intval($query->getSingleScalarResult());
+        error_log("nombrePage : ".$query->getDQL()." ==> ".$res." / ".$articlesParPage);
         return ceil($res / $articlesParPage);
     } catch (\Doctrine\ORM\NonUniqueResultException $e) {
         return 0;
@@ -370,18 +372,30 @@ $app->redirect('/catalogue/', '/catalogue/1', 301);
 $app->redirect('/catalogue/0', '/catalogue/1', 301);
 
 $app->get('/catalogue/{page:[1-9][0-9]*}', function(Request $req, Response $resp, array $args){
-    $articlesParPages = 5;
+    $parametres = [];
+    $articlesParPages = 3;
     $page = intval($args['page']);
     $filtre = $req->getParam('filtre');
-    $tri = $req->getParam('tri');
-    $parametres = [];
+    $tri =  $req->getParam('tri');
+    $sens = $req->getParam('sens');
+    $prixMin =  $req->getParam('prixMin');
+    $prixMax = $req->getParam('prixMax');
     if(!empty($filtre)){
         $parametres['filtre'] = $filtre;
     }
     if(!empty($tri)){
         $parametres['tri'] = $tri;
     }
-    $nombrePages = nombrePage($articlesParPages, $filtre);
+    if(!empty($sens)){
+        $parametres['sens'] = $sens;
+    }
+    if(!empty($prixMin)){
+        $parametres['prixMin'] = $prixMin;
+    }
+    if(!empty($prixMax)){
+        $parametres['prixMax'] = $prixMax;
+    }
+    $nombrePages = nombrePage($articlesParPages, $filtre, $prixMin, $prixMax);
     //On affiche la dernière page si le nombre de page donné est plus grand que le nombre de pages
     if($page > $nombrePages){
         $page = $nombrePages;
@@ -394,7 +408,7 @@ $app->get('/catalogue/{page:[1-9][0-9]*}', function(Request $req, Response $resp
     ];
     return $resp->write(loadTemplate('catalogue')->render([
         'activePage' => 'catalogue',
-        'articles' => $nombrePages > 0 ? articlesPage($page, $articlesParPages, $filtre) : [],
+        'articles' => $nombrePages > 0 ? articlesPage($page, $articlesParPages, $filtre, $prixMin, $prixMax, $tri, $sens) : [],
         'pagination' => $paginationParams
     ]));
 });
