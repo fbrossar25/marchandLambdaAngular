@@ -1,3 +1,9 @@
+{# Pour que le lien 'Catalogue' renvois vers la premire page sans filtre, ou nulle part s'il n'y as pas de filtre #}
+{% if activePage is not same as('catalogue') or pagination.currentFilters.filtre is not empty or pagination.currentFilters.tri is not empty %}
+    {% set catalogueHref = "/catalogue/1" %}
+{% else %}
+    {% set catalogueHref = '#' %}
+{% endif %}
 <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
     <a class="navbar-brand" href="/accueil">Accueil</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
@@ -8,7 +14,7 @@
     <div class="collapse navbar-collapse" id="navbarsExampleDefault">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a class="nav-link {% if activePage is same as('catalogue') %}active{% endif %}" href="{% if activePage is same as('catalogue') %}#{% else %}/catalogue/1{% endif %}">Catalogue</a>
+                <a class="nav-link {% if activePage is same as('catalogue') %}active{% endif %}" href="{{ catalogueHref }}">Catalogue</a>
             </li>
             {% if session.email %}
                 <li class="nav-item">
@@ -36,9 +42,8 @@
                 </li>
             {% endif %}
         </ul>
-        <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" name="filtre" type="text" placeholder="Rechercher un produit"
-                   aria-label="Rechercher">
+        <form class="form-inline my-2 my-lg-0" method="get">
+            <input class="form-control mr-sm-2" name="filtre" type="text" placeholder="Rechercher un produit" aria-label="Rechercher" value="{{ pagination.currentFilters.filtre }}">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Rechercher</button>
         </form>
     </div>

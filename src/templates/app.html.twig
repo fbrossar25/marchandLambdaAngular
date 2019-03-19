@@ -14,7 +14,7 @@
     
     <body>
         <header>
-            {% include 'nav.html.twig' with {'activePage': activePage} %}
+            {% include 'nav.html.twig' with {'session': session, 'activePage': activePage} %}
         </header>
         <main role="main">
             {% block main %}{% endblock %}

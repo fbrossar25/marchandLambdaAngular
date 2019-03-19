@@ -1,10 +1,17 @@
 {% extends 'app.html.twig' %}
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="/src/assets/css/catalogue.css"/>
+{% endblock %}
 {% block main %}
     <div class="container">
+        {% if articles is empty %}
+            <h2>Pas de résultats</h2>
+        {% else %}
             {% for article in articles %}
                 {% include 'article-card.html.twig' with article %}
                 {% set count = count + 1 %}
             {% endfor %}
+        {% endif %}
     </div>
     {% include 'pagination.html.twig' with pagination %}
 {% endblock %}

@@ -110,7 +110,7 @@ function utilisateurActuel(){
     global $clientRepository;
     if(isset($_SESSION['email'])){
         $client = $clientRepository->findOneBy(['email' => $_SESSION['email']]);
-        return $client === null ? false : $client;
+        return $client !== null ? $client : false;
     }else{
         return false;
     }
@@ -144,28 +144,64 @@ function produitsAccueil(){
     return $qb->getQuery()->getArrayResult();
 }
 
-function articlesPage($page, $articlesParPage){
+function articlesPage($page, $articlesParPage, $filtre='', $prixMin=0, $prixMax=-1, $orderDesc=false){
     global $entityManager;
     $qb = $entityManager->createQueryBuilder();
-    //les pages sot indexées à partir de 1
-    $query = $qb->select('a')
-                ->from('Article', 'a')
-                ->setFirstResult(($page-1) * $articlesParPage)
-                ->setMaxResults($articlesParPage)
-                ->getQuery();
+    $params = [];
+    $qb->select('a')
+        ->from('article', 'a');
+    if(!empty($filtre)){
+        $qb->where("UPPER(a.nom) LIKE :filtre");
+        $params['filtre'] = '%'.addcslashes(strtoupper($filtre), '%_').'%';
+    }
+    if($prixMin > $prixMax){
+        $temp = $prixMax;
+        $prixMax = $prixMin;
+        $prixMin = $temp;
+    }
+    if(is_numeric($prixMax) && $prixMin > 0){
+        $qb->andWhere('a.prix >= :min');
+        $params['min'] = $prixMin;
+    }
+    if(is_numeric($prixMax) && $prixMax > 0){
+        $qb->andWhere('a.prix <= :max');
+        $params['max'] = $prixMax;
+    }
+    $qb->setParameters($params);
+    $qb->orderBy('a.nom', $orderDesc === true ? 'DESC' : 'ASC');
+    $query = $qb->getQuery();
     return $query->getArrayResult();
 }
 
-function nombrePage($articlesParPage){
+function nombrePage($articlesParPage, $filtre='', $prixMin=0, $prixMax=-1){
     global $entityManager;
     $qb = $entityManager->createQueryBuilder();
-    $query = $qb->select('count(a)')
-        ->from('Article', 'a')
-        ->getQuery();
+    $params = [];
+    $qb->select('COUNT(a.idArticle)')
+        ->from('article', 'a');
+    if(!empty($filtre)){
+        $qb->where("UPPER(a.nom) LIKE :filtre");
+        $params['filtre'] = '%'.addcslashes(strtoupper($filtre), '%_').'%';
+    }
+    if($prixMin > $prixMax){
+        $temp = $prixMax;
+        $prixMax = $prixMin;
+        $prixMin = $temp;
+    }
+    if(is_numeric($prixMax) && $prixMin > 0){
+        $qb->andWhere('a.prix >= :min');
+        $params['min'] = $prixMin;
+    }
+    if(is_numeric($prixMax) && $prixMax > 0){
+        $qb->andWhere('a.prix <= :max');
+        $params['max'] = $prixMax;
+    }
+    $qb->setParameters($params);
+    $query = $qb->getQuery();
     try {
-        $res = $query->getSingleScalarResult();
+        $res = intval($query->getSingleScalarResult());
         return ceil($res / $articlesParPage);
-    } catch (\Doctrine\ORM\NonUniqueResultException $e) {
+    } catch (\Doctrine\ORM\NonUniqueResultException | \Doctrine\ORM\NoResultException $e) {
         return 0;
     }
 }
@@ -238,8 +274,11 @@ $app->post('/inscription', function(Request $req, Response $resp, array $args){
 
 $app->get('/administration/article', function(Request $req, Response $resp, array $args){
     if(estSessionAdmin()){
-        $data = $req->getParsedBody() === null ? [] : $req->getParsedBody();
-        $data = array_merge($data, ['activePage' => 'admin-article']);
+        $data = ['activePage' => 'admin-article'];
+        //Récupération des données existantes dans la requêtes
+        if(is_array($req->getParsedBody())){
+            $data = array_merge($data, $req->getParsedBody());
+        }
         return $resp->write(loadTemplate('administration-article')
                     ->render($data));
     }else{
@@ -264,10 +303,14 @@ $app->post('/administration/article', function(Request $req, Response $resp, arr
 
 $app->get('/compte', function(Request $req, Response $resp, array $args){
     if(isset($_SESSION['email'])){
-        $data = array_merge([
+        $data = [
             'compte' => utilisateurActuel(),
             'activePage' => 'compte',
-        ],$req->getParsedBody() === null ? [] : $req->getParsedBody());
+        ];
+        //Récupération des données existantes dans la requêtes
+        if(is_array($req->getParsedBody())){
+            $data = array_merge($data, $req->getParsedBody());
+        }
         return $resp->write(loadTemplate('compte')
             ->render($data));
     }else{
@@ -320,24 +363,36 @@ $app->get('/email-existe', function(Request $req, Response $resp, array $args){
     return $resp->withJson(!emailDisponible($req->getParam('email')));
 });
 
+$app->redirect('/catalogue/', '/catalogue/1', 301);
 $app->redirect('/catalogue/0', '/catalogue/1', 301);
 
 $app->get('/catalogue/{page:[1-9][0-9]*}', function(Request $req, Response $resp, array $args){
     $articlesParPages = 5;
-    $nombrePages = nombrePage($articlesParPages);
     $page = intval($args['page']);
+    $filtre = $req->getParam('filtre');
+    $tri = $req->getParam('tri');
+    $parametres = [];
+    if(!empty($filtre)){
+        $parametres['filtre'] = $filtre;
+    }
+    if(!empty($tri)){
+        $parametres['tri'] = $tri;
+    }
+    $nombrePages = nombrePage($articlesParPages, $filtre);
     //On affiche la dernière page si le nombre de page donné est plus grand que le nombre de pages
     if($page > $nombrePages){
         $page = $nombrePages;
     }
+    $paginationParams =  [
+        'currentPage' => $page,
+        'alwaysShowFirstAndLast' => true,
+        'lastPage' => $nombrePages,
+        'currentFilters' => $parametres
+    ];
     return $resp->write(loadTemplate('catalogue')->render([
         'activePage' => 'catalogue',
-        'articles' => articlesPage($page, $articlesParPages),
-        'pagination' => [
-            'currentPage' => $page,
-            'alwaysShowFirstAndLast' => true,
-            'lastPage' => $nombrePages
-        ]
+        'articles' => $nombrePages > 0 ? articlesPage($page, $articlesParPages, $filtre) : [],
+        'pagination' => $paginationParams
     ]));
 });
 

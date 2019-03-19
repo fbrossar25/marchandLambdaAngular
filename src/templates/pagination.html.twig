@@ -13,18 +13,25 @@
     * alwaysShowFirstAndLast (bool) : Always show first and last link (just disabled)
     * lastPage (int) : represents the total number of existing pages
 #}
+{% set options = '' %}
+{% for filter, value in currentFilters if value is not empty%}
+    {% set options = options ~ "#{filter}=#{value}&" %}
+{% endfor %}
+{% if options is not empty %}
+    {% set options = '?' ~ options %}
+{% endif %}
 {% if lastPage > 1 %}
     {% set extremePagesLimit = 3 %}
     {% set nearbyPagesLimit = 2 %}
     <ul class="pagination justify-content-center">
         {% if currentPage > 1 %}
             {% if alwaysShowFirstAndLast %}
-                <li class="page-item"><a class="page-link" href="{{ paginationPath }}1" aria-label="Première">&laquo;</a></li>
+                <li class="page-item"><a class="page-link" href="{{ paginationPath }}1{{ options }}" aria-label="Première">&laquo;</a></li>
             {% endif %}
-            <li class="page-item"><a class="page-link" href="{{ paginationPath }}{{ currentPage-1 }}" aria-label="Précédente">&lt;</a></li>
+            <li class="page-item"><a class="page-link" href="{{ paginationPath }}{{ currentPage-1 }}{{ options }}" aria-label="Précédente">&lt;</a></li>
 
             {% for i in range(1, extremePagesLimit) if ( i < currentPage - nearbyPagesLimit ) %}
-                <li class="page-item"><a class="page-link" href="{{ paginationPath }}{{ i }}">{{ i }}</a></li>
+                <li class="page-item"><a class="page-link" href="{{ paginationPath }}{{ i }}{{ options }}">{{ i }}</a></li>
             {% endfor %}
 
             {% if extremePagesLimit + 1 < currentPage - nearbyPagesLimit %}
@@ -32,7 +39,7 @@
             {% endif %}
 
             {% for i in range(currentPage-nearbyPagesLimit, currentPage-1) if ( i > 0 ) %}
-                <li class="page-item"><a class="page-link" href="{{ paginationPath }}{{ i }}">{{ i }}</a></li>
+                <li class="page-item"><a class="page-link" href="{{ paginationPath }}{{ i }}{{ options }}">{{ i }}</a></li>
             {% endfor %}
         {% endif %}
 
@@ -40,7 +47,7 @@
 
         {% if currentPage < lastPage %}
             {% for i in range(currentPage+1, currentPage + nearbyPagesLimit) if ( i <= lastPage ) %}
-                <li class="page-item"><a class="page-link" href="{{ paginationPath }}{{ i }}">{{ i }}</a></li>
+                <li class="page-item"><a class="page-link" href="{{ paginationPath }}{{ i }}{{ options }}">{{ i }}</a></li>
             {% endfor %}
 
             {% if  (lastPage - extremePagesLimit) > (currentPage + nearbyPagesLimit) %}
@@ -48,12 +55,12 @@
             {% endif %}
 
             {% for i in range(lastPage - extremePagesLimit+1, lastPage) if ( i > currentPage + nearbyPagesLimit ) %}
-                <li class="page-item"><a class="page-link" href="{{ paginationPath }}{{ i }}">{{ i }}</a></li>
+                <li class="page-item"><a class="page-link" href="{{ paginationPath }}{{ i }}{{ options }}">{{ i }}</a></li>
             {% endfor %}
 
-            <li class="page-item"><a class="page-link" href="{{ paginationPath }}{{ currentPage+1 }}" aria-label="Suivante">&gt;</a></li>
+            <li class="page-item"><a class="page-link" href="{{ paginationPath }}{{ currentPage+1 }}{{ options }}" aria-label="Suivante">&gt;</a></li>
             {% if alwaysShowFirstAndLast %}
-                <li class="page-item"><a class="page-link" href="{{ paginationPath }}{{ lastPage }}" aria-label="Dernière">&raquo;</a></li>
+                <li class="page-item"><a class="page-link" href="{{ paginationPath }}{{ lastPage }}{{ options }}" aria-label="Dernière">&raquo;</a></li>
             {% endif %}
         {% endif %}
     </ul>
