@@ -42,8 +42,16 @@
                 </li>
             {% endif %}
         </ul>
-        <form class="form-inline my-2 my-lg-0" method="get">
-            <input class="form-control mr-sm-2" name="filtre" type="text" placeholder="Rechercher un produit" aria-label="Rechercher" value="{{ pagination.currentFilters.filtre }}">
+        <form class="form-inline my-2 my-lg-0 justify-content-end" action="/catalogue/1" method="get">
+            <select name="tri" class="custom-select col-md-3 mr-sm-2">
+                <option value="NAME ASC" selected>Nom croissant</option>
+                <option value="NAME DESC">Nom décroissant</option>
+                <option value="PRICE ASC">Prix croissant</option>
+                <option value="PRICE DESC">Prix décroissant</option>
+            </select>
+            <input type="number" name="priceMin" placeholder="Prix min" class="form-control mr-sm-2" min="0.01" step="0.01" style="width: 15%">
+            <input type="number" name="priceMax" placeholder="Prix max" class="form-control mr-sm-2" min="0.01" step="0.01" style="width: 15%">
+            <input type="text" name="filtre" placeholder="Rechercher un produit" class="form-control mr-sm-2" aria-label="Rechercher" value="{{ pagination.currentFilters.filtre }}">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Rechercher</button>
         </form>
     </div>

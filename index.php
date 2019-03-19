@@ -204,7 +204,7 @@ function nombrePage($articlesParPage, $filtre='', $prixMin=0, $prixMax=-1){
     try {
         $res = intval($query->getSingleScalarResult());
         return ceil($res / $articlesParPage);
-    } catch (\Doctrine\ORM\NonUniqueResultException | \Doctrine\ORM\NoResultException $e) {
+    } catch (\Doctrine\ORM\NonUniqueResultException $e) {
         return 0;
     }
 }
