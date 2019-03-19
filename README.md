@@ -14,8 +14,8 @@
     - [x] /catalogue/{page}
     - [x] Redirection vers /article/{id}
 - Article
-    - [ ] Nom, descrption, prix
-    - [ ] /article/{id}
+    - [x] Nom, descrption, prix
+    - [ ] 15 Articles
 - Recherche
     - [ ] filtrage Nom, prix
 - Inscription
