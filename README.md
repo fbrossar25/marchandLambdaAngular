@@ -17,7 +17,7 @@
     - [x] Nom, descrption, prix
     - [ ] 15 Articles
 - Recherche
-    - [ ] filtrage Nom, prix
+    - [x] filtrage Nom, prix
 - Inscription
     - [x] Création client
     - [x] Gestion d'erreur à l'inscription
