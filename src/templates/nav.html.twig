@@ -42,19 +42,19 @@
                 </li>
             {% endif %}
         </ul>
-        <form class="form-inline my-2 my-lg-0 justify-content-end" action="/catalogue/1" method="get">
-            <select name="tri" class="custom-select mr-sm-2" style="width: 5em">
+        <form class="form-inline justify-content-end" action="/catalogue/1" method="get">
+            <select name="tri" class="form-control custom-select mr-2" style="width: 5em">
                 <option value="nom" {% if pagination.currentFilters.tri is not same as('prix') %}selected{% endif %}>Nom</option>
                 <option value="prix" {% if pagination.currentFilters.tri is same as('prix') %}selected{% endif %}>Prix</option>
             </select>
-            <select name="sens" class="custom-select mr-sm-2" style="width: 8em">
+            <select name="sens" class="form-control custom-select mr-2" style="width: 8em">
                 <option value="ASC" {% if pagination.currentFilters.sens is not same as('DESC') %}selected{% endif %}>croissant</option>
                 <option value="DESC" {% if pagination.currentFilters.sens is same as('DESC') %}selected{% endif %}>décroissant</option>
             </select>
-            <input type="number" name="prixMin" placeholder="Prix min" class="form-control mr-sm-2" min="0.01" step="0.01" style="width: 7em" value="{{ pagination.currentFilters.prixMin }}">
-            <input type="number" name="prixMax" placeholder="Prix max" class="form-control mr-sm-2" min="0.01" step="0.01" style="width: 7em" value="{{ pagination.currentFilters.prixMax }}">
-            <input type="text" name="filtre" placeholder="Rechercher un produit" class="form-control mr-sm-2 col-md-3" aria-label="Rechercher" value="{{ pagination.currentFilters.filtre }}">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Rechercher</button>
+            <input type="number" name="prixMin" placeholder="Prix min" class="form-control mr-2" min="0.01" step="0.01" style="width: 7em" value="{{ pagination.currentFilters.prixMin }}">
+            <input type="number" name="prixMax" placeholder="Prix max" class="form-control mr-2" min="0.01" step="0.01" style="width: 7em" value="{{ pagination.currentFilters.prixMax }}">
+            <input type="text" name="filtre" placeholder="Rechercher un produit" class="form-control" aria-label="Rechercher" value="{{ pagination.currentFilters.filtre }}">
+            <button class="btn btn-outline-success ml-2" type="submit">Rechercher</button>
         </form>
     </div>
 </nav>
