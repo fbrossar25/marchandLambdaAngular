@@ -11,4 +11,4 @@
 
 ## Liens notables
  - PHPMyAdmin : https://m2ilc-2019-brossard-florian-fbrossar.c9users.io/phpmyadmin
- - Site du projet : https://m2ilc-2019-brossard-florian-fbrossar.c9users.io/home
+ - Site du projet : https://m2ilc-2019-brossard-florian-fbrossar.c9users.io/accueil
