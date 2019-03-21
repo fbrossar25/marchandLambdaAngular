@@ -1,0 +1,20 @@
+<form id="addArticleForm" class="form-horizontal" role="form" action="/administration/article" method="post">
+    <h2>Ajouter un produit</h2>
+    {% include 'champs-article.html.twig' %}
+    {% if added %}
+        <div id="product-added" class="form-group alert alert-success">
+            <div class="col-sm-12 col-sm-offset-3">
+                Produit ajouté avec succès
+            </div>
+        </div>
+    {% elseif added is not null and not added %}
+        <div id="product-not-added" class="form-group alert alert-danger">
+            <div class="col-sm-12 col-sm-offset-3">
+                Impossible d'ajouter le produit
+            </div>
+        </div>
+    {% endif %}
+    <button type="submit" class="btn btn-primary btn-block">Ajouter le produit</button>
+</form>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
+<script src="/src/assets/js/formulaire-article.js"></script>

@@ -3,7 +3,7 @@
 {% else %}
     {% set imgHref = 'http://placehold.it/700x400' %}
 {% endif %}
-<div class="card mb-4">
+<div class="card mb-4" id="article-{{ article.idArticle }}">
     <div class="row no-gutters">
         <div class="col-md-4">
             <img class="card-img" src="{{ imgHref }}" alt="{{ article.nom }}">
@@ -16,9 +16,21 @@
             </div>
             {% if session.admin %}
                 <div class="card-footer">
-                    <div class="btn-group btn-group-md col-md-8 p-0 offset-md-8" role="group">
-                        <button type="button" class="btn btn-primary mx-2 rounded">Modifier</button>
-                        <button type="button" class="btn btn-danger mx-2 rounded">Supprimer</button>
+                    <div class="btn-group btn-group-md col-md-8 offset-md-8" role="group">
+                        <button type="button"
+                                class="btn btn-primary mx-2 rounded admin-btn-modifier"
+                                data-toggle="modal"
+                                data-target="#admin-modale-modification"
+                                data-id="{{ article.idArticle }}">
+                            Modifier
+                        </button>
+                        <button type="button"
+                                class="btn btn-danger mx-2 rounded admin-btn-supprimer"
+                                data-toggle="modal"
+                                data-target="#admin-modale-suppression"
+                                data-id="{{ article.idArticle }}">
+                            Supprimer
+                        </button>
                     </div>
                 </div>
             {% endif %}

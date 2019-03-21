@@ -1,0 +1,31 @@
+<div class="form-group">
+    <label for="name" class="col-md-6 control-label">Nom du produit*</label>
+    <div class="col-sm-12">
+        <input type="text" id="name" name="name" placeholder="Nom du produit" class="form-control" required autofocus value="{{ article.nom }}">
+    </div>
+</div>
+<div class="form-group">
+    <label for="price" class="col-md-6 control-label">Prix*</label>
+    <div class="col-sm-12 row">
+        <div class="col-sm-11">
+            <input type="number" id="price" name="price" placeholder="Prix" class="form-control" required autofocus min="0.01" value="{{ article.prix }}">
+        </div>
+        <div class="col-sm-1 col-form-label">€</div>
+    </div>
+</div>
+<div class="form-group">
+    <label for="description" class="col-md-6 control-label">Description*</label>
+    <div class="col-sm-12">
+        <textarea id="description" name="description" placeholder="Description" class="form-control" rows="3" maxlength="512" required>{{ article.description }}</textarea>
+    </div>
+</div>
+<div class="form-group">
+    <div class="col-sm-12 col-sm-offset-3">
+        <span class="help-block">*Champs requis</span>
+    </div>
+</div>
+<div id="error" class="form-group alert alert-danger">
+    <div class="col-sm-12 col-sm-offset-3">
+        Au moins un champs requis requiert votre attention
+    </div>
+</div>

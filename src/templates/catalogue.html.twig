@@ -14,4 +14,10 @@
         {% endif %}
     </div>
     {% include 'pagination.html.twig' with pagination %}
+    {% if session.admin %}
+        {% include 'modale-suppression.html.twig' %}
+        {% include 'modale-modification.html.twig' %}
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
+        <script src="/src/assets/js/catalogue.js"></script>
+    {% endif %}
 {% endblock %}

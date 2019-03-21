@@ -107,6 +107,25 @@ function mettreAJourCompte(array $data){
     }
 }
 
+function mettreAJourArticle(array $data){
+    global $entityManager, $articleRepository;
+    if(estSessionAdmin()){
+        $article = $articleRepository->find($data['id']);
+        if($article !== null){
+            $article->setNom($data['nom']);
+            $article->setPrix($data['prix']);
+            $article->setDescription($data['description']);
+            try{
+                $entityManager->flush();
+            }catch (\Doctrine\ORM\OptimisticLockException | \Doctrine\ORM\ORMException $e) {
+                return false;
+            }
+            return true;
+        }
+    }
+    return false;
+}
+
 function utilisateurActuel(){
     global $clientRepository;
     if(isset($_SESSION['email'])){
@@ -152,6 +171,7 @@ function articlesPage($page, $articlesParPage, $filtre='', $prixMin=-1, $prixMax
     $qb->select('a')
         ->from('article', 'a');
     if(!empty($filtre)){
+        //filtre par nom en ignorant la casse
         $qb->where("UPPER(a.nom) LIKE :filtre");
         $params['filtre'] = '%'.addcslashes(strtoupper($filtre), '%_').'%';
     }
@@ -205,8 +225,36 @@ function nombrePage($articlesParPage, $filtre='', $prixMin=-1, $prixMax=-1){
         $res = intval($query->getSingleScalarResult());
         return ceil($res / $articlesParPage);
     } catch (\Doctrine\ORM\NonUniqueResultException $e) {
+        error_log($e);
         return 0;
     }
+}
+
+function supprimerArticle($id){
+    global $entityManager;
+    $qb = $entityManager->createQueryBuilder();
+    $qb->delete()->from('article', 'a')->where('a.idArticle = :id')->setParameter('id', $id);
+    try{
+        return $qb->getQuery()->getResult() > 0;
+    }catch(Doctrine\ORM\Query\QueryException $e){
+        error_log($e);
+        return false;
+    }
+}
+
+function articleModificationDisponible($id,$nom){
+    global $articleRepository;
+    $article = $articleRepository->find($id);
+    if($article !== null){
+        if($article->getNom() === $nom){
+            //Le nom n'as pas changé
+            return true;
+        }else{
+            //Le nom est libre
+            return $articleRepository->count(['nom' => $nom]) === 0;
+        }
+    }
+    return false;
 }
 
 $app = new \Slim\App([
@@ -411,5 +459,37 @@ $app->get('/catalogue/{page:[1-9][0-9]*}', function(Request $req, Response $resp
     ]));
 });
 
+$app->post('/supprimer-article', function(Request $req, Response $resp, array $args){
+    if(!estSessionAdmin()){
+        return $resp->withStatus(403, "Vous n'avez pas l'autorisation d'effectuer cette opération");
+    }
+    $idArticle = intval($req->getParsedBody()['id']);
+    if(!is_numeric($idArticle)){
+        return $resp->withStatus(400, "L'id fournis n'est pas valide");
+    }else if(supprimerArticle($idArticle)){
+        return $resp->withStatus(200);
+    }else{
+        return $resp->withStatus(500, "La suppression à échouée");
+    }
+});
+
+$app->post('/article-changement-disponible', function(Request $req, Response $resp, array $args){
+    if(!estSessionAdmin()){
+        return $resp->withStatus(403, "Vous n'avez pas l'autorisation d'effectuer cette opération");
+    }
+    $id = $req->getParsedBody()['id'];
+    $nom = $req->getParsedBody()['name'];
+    return $resp->withJson(articleModificationDisponible($id,$nom));
+});
+
+$app->post('/modifier-article', function(Request $req, Response $resp, array $args){
+    if(!estSessionAdmin()){
+        return $resp->withStatus(403, "Vous n'avez pas l'autorisation d'effectuer cette opération");
+    }else if(mettreAJourArticle($req->getParsedBody())){
+        return $resp->withStatus(200);
+    }else{
+        return $resp->withStatus(500, "La modification à échouée");
+    }
+});
 
 $app->run();

@@ -1,0 +1,22 @@
+<div id="admin-modale-modification" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Modification de l'article</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="updateArticleForm" class="form-horizontal" role="form" action="/administration/article" method="post">
+                    {% include 'champs-article.html.twig' %}
+                </form>
+                <div id="admin-modale-modification-erreur" class="alert alert-danger" role="alert">Une erreur est survenue</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                <button id="admin-modale-modification-btn" type="button" class="btn btn-success">Valider les modifications</button>
+            </div>
+        </div>
+    </div>
+</div>

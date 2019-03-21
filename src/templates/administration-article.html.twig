@@ -4,55 +4,6 @@
 {% endblock %}
 {% block main %}
 <div class="container">
-    <form id="addArticleForm" class="form-horizontal" role="form" action="/administration/article" method="post">
-        <h2>Ajouter un produit</h2>
-        <div class="form-group">
-            <label for="name" class="col-md-6 control-label">Nom du produit*</label>
-            <div class="col-sm-12">
-                <input type="text" id="name" name="name" placeholder="Nom du produit" class="form-control" required autofocus>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="price" class="col-md-6 control-label">Prix*</label>
-            <div class="col-sm-12 row">
-                <div class="col-sm-11">
-                    <input type="number" id="price" name="price" placeholder="Prix" class="form-control" required autofocus min="0.01">
-                </div>
-                <div class="col-sm-1 col-form-label">€</div>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="description" class="col-md-6 control-label">Description*</label>
-            <div class="col-sm-12">
-                <textarea id="description" name="description" placeholder="Description" class="form-control" rows="3" maxlength="512" required></textarea>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-sm-12 col-sm-offset-3">
-                <span class="help-block">*Champs requis</span>
-            </div>
-        </div>
-        <div id="error" class="form-group alert alert-danger">
-            <div class="col-sm-12 col-sm-offset-3">
-                Au moins un champs requis requiert votre attention
-            </div>
-        </div>
-        {% if added %}
-        <div id="product-added" class="form-group alert alert-success">
-            <div class="col-sm-12 col-sm-offset-3">
-                Produit ajouté avec succès
-            </div>
-        </div>
-        {% elseif added is not null and not added %}
-        <div id="product-not-added" class="form-group alert alert-danger">
-            <div class="col-sm-12 col-sm-offset-3">
-                Impossible d'ajouter le produit
-            </div>
-        </div>
-        {% endif %}
-        <button type="submit" class="btn btn-primary btn-block">Ajouter le produit</button>
-    </form>
+    {% include 'formulaire-article.html.twig' %}
 </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
-<script src="/src/assets/js/administration-article.js"></script>
 {% endblock %}
