@@ -37,4 +37,11 @@ Article:
                 fixed: false
                 default: !!binary UGFzIGRlIGRlc2NyaXB0aW9uIGTpZmluaWU=
             column: DESCRIPTION
+        urlImage:
+            type: string
+            nullable: true
+            length: 1024
+            options:
+                fixed: false
+            column: URL_IMAGE
     lifecycleCallbacks: {  }

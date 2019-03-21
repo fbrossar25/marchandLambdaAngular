@@ -115,6 +115,7 @@ function mettreAJourArticle(array $data){
             $article->setNom($data['nom']);
             $article->setPrix($data['prix']);
             $article->setDescription($data['description']);
+            $article->setUrlImage($data['imageUrl']);
             try{
                 $entityManager->flush();
             }catch (\Doctrine\ORM\OptimisticLockException | \Doctrine\ORM\ORMException $e) {
@@ -142,6 +143,7 @@ function ajouterArticle(array $data){
     $article->setNom($data['name']);
     $article->setDescription($data['description']);
     $article->setPrix($data['price']);
+    $article->setUrlImage($data['imageUrl']);
     if(articleDisponible($article->getNom())){
         try {
             $entityManager->persist($article);
@@ -419,7 +421,7 @@ $app->redirect('/catalogue/0', '/catalogue/1', 301);
 
 $app->get('/catalogue/{page:[1-9][0-9]*}', function(Request $req, Response $resp, array $args){
     $parametres = [];
-    $articlesParPages = 3;
+    $articlesParPages = 5;
     $page = intval($args['page']);
     $filtre = $req->getParam('filtre');
     $tri =  $req->getParam('tri');

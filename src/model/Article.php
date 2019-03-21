@@ -124,4 +124,35 @@ class Article
     {
         return $this->description;
     }
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="URL_IMAGE", type="string", length=1024, nullable=true)
+     */
+    private $urlImage;
+
+
+    /**
+     * Set urlImage.
+     *
+     * @param string|null $urlImage
+     *
+     * @return Article
+     */
+    public function setUrlImage($urlImage = null)
+    {
+        $this->urlImage = $urlImage;
+
+        return $this;
+    }
+
+    /**
+     * Get urlImage.
+     *
+     * @return string|null
+     */
+    public function getUrlImage()
+    {
+        return $this->urlImage;
+    }
 }

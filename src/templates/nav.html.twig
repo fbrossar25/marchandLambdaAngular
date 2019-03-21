@@ -26,7 +26,6 @@
                            aria-expanded="false" href="#">Administration</a>
                         <div class="dropdown-menu">
                             <a class="dropdown-item" href="{% if activePage is same as('admin-article') %}#{% else %}/administration/article{% endif %}">Ajouter un article</a>
-                            <a class="dropdown-item" href="{% if activePage is same as('admin-utilisateur') %}#{% else %}/administration/utilisateurs{% endif %}">Gestion des utilisateurs</a>
                         </div>
                     </li>
                 {% endif %}

@@ -3,6 +3,7 @@ let ID_ARTICLE = -1;
 $('#error').hide();
 
 $.validator.messages.required = 'Ce champ est requis';
+$.validator.messages.url = 'Ce champ doit être une URL valide';
 
 $('#updateArticleForm').validate({
     rules:{
@@ -15,6 +16,9 @@ $('#updateArticleForm').validate({
                     id: () => {return ID_ARTICLE;}
                 }
             }
+        },
+        imageUrl: {
+            url: true
         }
     },
     messages:{
@@ -34,6 +38,10 @@ $('#updateArticleForm').validate({
     },
     errorClass: 'is-invalid',
     validClass: 'is-valid'
+});
+
+$('#imageUrl').blur(event => {
+    $('#imgThumbnail').attr('src', $('#imageUrl').val());
 });
 
 $('#admin-modale-suppression-erreur').hide();
@@ -64,7 +72,8 @@ function getCardData(id){
         id: id,
         nom: cardBody.find('.card-title').text(),
         prix: cardBody.find('h5').text().replace(/€/g, ''),
-        description: cardBody.find('.card-text').text()
+        description: cardBody.find('.card-text').text(),
+        imageUrl: $(`#article-${id} .card-img`).attr('src')
     };
 }
 
@@ -74,7 +83,8 @@ function getPostData(id){
         id: id,
         nom: form.find('#name').val(),
         prix: form.find('#price').val(),
-        description: form.find('#description').text()
+        description: form.find('#description').text(),
+        imageUrl: form.find('#imageUrl').val()
     };
 }
 
@@ -93,6 +103,8 @@ $('#admin-modale-modification').on('show.bs.modal', event => {
     form.find('#name').val(data.nom);
     form.find('#price').val(data.prix);
     form.find('#description').text(data.description);
+    form.find('#imageUrl').val(data.imageUrl);
+    $('#imgThumbnail').attr('src', data.imageUrl);
 
     $('#admin-modale-modification-btn').on('click', event => {
         if($('#updateArticleForm').valid()){
