@@ -64,6 +64,7 @@ function enregistrerUtilisateur(array $data){
     $client->setNumeroVoie($data['streetNo']);
     $client->setTelephone($data['phoneNumber']);
     $client->setCodePostal($data['postalCode']);
+    $client->setAdmin(false);
     if(emailDisponible($client->getEmail())){
         try{
             $entityManager->persist($client);
