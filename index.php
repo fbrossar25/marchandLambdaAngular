@@ -96,6 +96,7 @@ function mettreAJourCompte(array $data){
         if($data['email'] === $_SESSION['email'] || emailDisponible($client->getEmail())){
             try{
                 $entityManager->flush();
+                $_SESSION['email'] = $client->getEmail();
             }catch (\Doctrine\ORM\OptimisticLockException | \Doctrine\ORM\ORMException $e) {
                 return false;
             }
