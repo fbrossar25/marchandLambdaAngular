@@ -83,7 +83,7 @@ function getPostData(id){
         id: id,
         nom: form.find('#name').val(),
         prix: form.find('#price').val(),
-        description: form.find('#description').text(),
+        description: form.find('#description').val(),
         imageUrl: form.find('#imageUrl').val()
     };
 }
