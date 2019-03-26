@@ -1,5 +1,9 @@
 # Projet WEB M2 ILC 2019
 
+## Comptes admin
+ - login : admin@test.fr
+ - pass : azerty
+
 ## Commandes
  - Démarrer mysql : `mysql-ctl start`
  - Mise à jour des dépendances : `composer update`
